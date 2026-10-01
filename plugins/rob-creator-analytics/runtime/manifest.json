@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "pluginVersion": "0.1.0-rc.1",
+  "nodeVersion": "24.21.0",
+  "nodeRange": ">=24 <25",
+  "binaryTracked": false,
+  "serverEntrypoint": "runtime/shared-analytics-mcp.mjs",
+  "managementEntrypoint": "runtime/management-helper.mjs",
+  "capabilityAssetSource": "data/analytics-capabilities",
+  "capabilityAssetDestination": "assets/analytics-capabilities",
+  "targets": {
+    "darwin-arm64": {
+      "nodePath": "runtime/darwin-arm64/bin/node",
+      "launcher": "scripts/launch-mcp",
+      "managementLauncher": "scripts/manage",
+      "credentialHelper": "runtime/darwin-arm64/bin/credential-helper"
+    }
+  },
+  "packagedTarget": "darwin-arm64"
+}

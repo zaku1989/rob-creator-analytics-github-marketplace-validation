@@ -1,0 +1,7 @@
+{
+  "target": "darwin-arm64",
+  "nodeVersion": "24.21.0",
+  "binaryPath": "bin/node",
+  "binaryPresent": true,
+  "credentialHelperPath": "bin/credential-helper"
+}

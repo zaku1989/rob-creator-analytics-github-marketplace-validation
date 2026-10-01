@@ -1,0 +1,24 @@
+#!/bin/sh
+set -eu
+
+: "${PLUGIN_ROOT:?PLUGIN_ROOT is required}"
+: "${PLUGIN_DATA:?PLUGIN_DATA is required}"
+
+platform=$(uname -s)
+architecture=$(uname -m)
+
+if [ "$platform" != "Darwin" ] || [ "$architecture" != "arm64" ]; then
+  echo "Unsupported runtime target: $platform/$architecture" >&2
+  exit 1
+fi
+
+node_path="$PLUGIN_ROOT/runtime/darwin-arm64/bin/node"
+server_path="$PLUGIN_ROOT/runtime/shared-analytics-mcp.mjs"
+
+if [ ! -d "$PLUGIN_DATA" ] || [ ! -w "$PLUGIN_DATA" ] ||
+   [ ! -x "$node_path" ] || [ ! -f "$server_path" ]; then
+  echo "Packaged Rob Creator Analytics runtime is unavailable" >&2
+  exit 1
+fi
+
+exec "$node_path" "$server_path"

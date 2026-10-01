@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "name": "rob-creator-analytics",
+    "version": "0.1.0-rc.1"
+  },
+  "sourceCommit": "7fde9eed78863720df94e3409ed046326c35691f",
+  "sourceTreeDirty": false,
+  "target": "darwin-arm64",
+  "node": {
+    "version": "v24.21.0",
+    "archive": "node-v24.21.0-darwin-arm64.tar.gz",
+    "archiveUrl": "https://nodejs.org/download/release/v24.21.0/node-v24.21.0-darwin-arm64.tar.gz",
+    "archiveSha256": "bed7eea5325e1108f32ce5228ddd6a5f0f08a499ee42aa7442aea583702f6057",
+    "executableSha256": "e4b5a3af0e05c75de2eae013904145f40fe7fc2a6e6f17510128bf45cca4e79b"
+  },
+  "capabilitySnapshotId": "analytics-capabilities-2026-08-26-r1",
+  "bundles": {
+    "mcpSha256": "ebacebb7c0317000cf74f571882077aa2e9c4387cccdcadc29fe11d076fe7b58",
+    "managementSha256": "f4ef8efcd816c6d0d624f0e88ec32288218e127f4c28a524de622b8311f905f3",
+    "capabilitySha256": "1d24e90e6f98373c8b42ec733cfef91a168090ca3d79e0093f711d07270d66eb"
+  },
+  "files": [
+    {
+      "path": ".codex-plugin/plugin.json",
+      "bytes": 890,
+      "sha256": "cff518673f48873a90104965b9f49f08939a8bcb2bb168e318e3ac11e7c7531d"
+    },
+    {
+      "path": ".mcp.json",
+      "bytes": 229,
+      "sha256": "9ca081c8588e02639f405e5924b0b287c50451230fb3b219c23e67941d523437"
+    },
+    {
+      "path": "LICENSE.txt",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "assets/analytics-capabilities/manifest.json",
+      "bytes": 206,
+      "sha256": "52a7daf0594ed54bd54d0eca72776164a180604a1a843aa4b38fdb749633b823"
+    },
+    {
+      "path": "assets/analytics-capabilities/verified/analytics-capabilities-2026-08-26-r1.json",
+      "bytes": 113469,
+      "sha256": "1d24e90e6f98373c8b42ec733cfef91a168090ca3d79e0093f711d07270d66eb"
+    },
+    {
+      "path": "licenses/NODE_LICENSE.txt",
+      "bytes": 157609,
+      "sha256": "5888dbb9a1d2b18f2c3e6c5f6af1b39de658372b402a0577b002777f14c62ace"
+    },
+    {
+      "path": "runtime/darwin-arm64/bin/credential-helper",
+      "bytes": 54192,
+      "sha256": "2dd8a8abca5849ae28737c414d30345916f99a7ec1d97b211b3425d856eb1824"
+    },
+    {
+      "path": "runtime/darwin-arm64/bin/node",
+      "bytes": 122129232,
+      "sha256": "e4b5a3af0e05c75de2eae013904145f40fe7fc2a6e6f17510128bf45cca4e79b"
+    },
+    {
+      "path": "runtime/darwin-arm64/layout.json",
+      "bytes": 163,
+      "sha256": "01712e81267b9e2885bcb2d0a2fda10049d43b53fb19cd2a968639fc0a6df7f7"
+    },
+    {
+      "path": "runtime/management-helper.mjs",
+      "bytes": 83965,
+      "sha256": "f4ef8efcd816c6d0d624f0e88ec32288218e127f4c28a524de622b8311f905f3"
+    },
+    {
+      "path": "runtime/manifest.json",
+      "bytes": 671,
+      "sha256": "0e51fcb87e1347431149668551186eb99150edd42d77103cdaaa8172afd401df"
+    },
+    {
+      "path": "runtime/shared-analytics-mcp.mjs",
+      "bytes": 420465,
+      "sha256": "ebacebb7c0317000cf74f571882077aa2e9c4387cccdcadc29fe11d076fe7b58"
+    },
+    {
+      "path": "scripts/launch-mcp",
+      "bytes": 648,
+      "sha256": "aa7021ab3976416091f6c67ac0a2a065f74871bb1edddabd0af2581b88a963c9"
+    },
+    {
+      "path": "scripts/manage",
+      "bytes": 621,
+      "sha256": "801e0a12d9e3c6bab59ae3757ab91ba4975cb752e1fbed6a8dbff4eaf4f1ee22"
+    },
+    {
+      "path": "skills/rob-creator-analytics-management/SKILL.md",
+      "bytes": 4795,
+      "sha256": "78ce99d7f11382ef455654d6f9b6980fa5d429ca42053e4655ed5226f74d8586"
+    }
+  ],
+  "contentManifestSha256": "c56b417105f040cbb3b2c95794c7d7b7a81fabb73770bd32d839c851151917fc"
+}
