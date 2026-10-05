@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pluginVersion": "0.1.0-rc.1",
+  "pluginVersion": "0.1.0-rc.2",
   "nodeVersion": "24.21.0",
   "nodeRange": ">=24 <25",
   "binaryTracked": false,
@@ -10,7 +10,9 @@
   "capabilityAssetDestination": "assets/analytics-capabilities",
   "targets": {
     "darwin-arm64": {
-      "nodePath": "runtime/darwin-arm64/bin/node",
+      "packagingMode": "chunked",
+      "nodePartsPath": "runtime/darwin-arm64/node-parts",
+      "bootstrap": "scripts/runtime-bootstrap",
       "launcher": "scripts/launch-mcp",
       "managementLauncher": "scripts/manage",
       "credentialHelper": "runtime/darwin-arm64/bin/credential-helper"

@@ -1,7 +1,24 @@
 {
   "target": "darwin-arm64",
   "nodeVersion": "24.21.0",
-  "binaryPath": "bin/node",
-  "binaryPresent": true,
+  "packagingMode": "chunked",
+  "finalFilename": "node",
+  "finalSize": 122129232,
+  "finalSha256": "e4b5a3af0e05c75de2eae013904145f40fe7fc2a6e6f17510128bf45cca4e79b",
+  "chunkSizeLimit": 67108864,
+  "chunkCount": 2,
+  "chunks": [
+    {
+      "path": "node-parts/node.part-000",
+      "bytes": 67108864,
+      "sha256": "b9eec7c01b93fc52193c9714dcd7d7ae9450c534a7e7a629f104b82bb0ee794d"
+    },
+    {
+      "path": "node-parts/node.part-001",
+      "bytes": 55020368,
+      "sha256": "87ed3a99ba3b9bb45bb85ef67dfe184b554660daa49c14efe85bd030ecb9e271"
+    }
+  ],
+  "fullBinaryPackaged": false,
   "credentialHelperPath": "bin/credential-helper"
 }

@@ -12,13 +12,14 @@ if [ "$platform" != "Darwin" ] || [ "$architecture" != "arm64" ]; then
   exit 1
 fi
 
-node_path="$PLUGIN_ROOT/runtime/darwin-arm64/bin/node"
+bootstrap="$PLUGIN_ROOT/scripts/runtime-bootstrap"
 entrypoint="$PLUGIN_ROOT/runtime/management-helper.mjs"
 
 if [ ! -d "$PLUGIN_DATA" ] || [ ! -w "$PLUGIN_DATA" ] ||
-   [ ! -x "$node_path" ] || [ ! -f "$entrypoint" ]; then
+   [ ! -x "$bootstrap" ] || [ ! -f "$entrypoint" ]; then
   echo "Packaged management runtime is unavailable" >&2
   exit 1
 fi
 
+node_path=$("$bootstrap")
 exec "$node_path" "$entrypoint" "$@"

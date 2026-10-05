@@ -1,0 +1,140 @@
+#!/bin/sh
+set -eu
+
+: "${PLUGIN_ROOT:?PLUGIN_ROOT is required}"
+: "${PLUGIN_DATA:?PLUGIN_DATA is required}"
+
+fail() {
+  echo "Verified packaged runtime is unavailable" >&2
+  exit 1
+}
+
+case "$PLUGIN_ROOT:$PLUGIN_DATA" in
+  /*:/*) ;;
+  *) fail ;;
+esac
+
+layout_path="$PLUGIN_ROOT/runtime/darwin-arm64/layout.json"
+[ -f "$layout_path" ] && [ -d "$PLUGIN_DATA" ] && [ -w "$PLUGIN_DATA" ] || fail
+
+read_layout() {
+  /usr/bin/plutil -extract "$1" raw -o - "$layout_path" 2>/dev/null || fail
+}
+
+target=$(read_layout target)
+node_version=$(read_layout nodeVersion)
+packaging_mode=$(read_layout packagingMode)
+final_filename=$(read_layout finalFilename)
+final_size=$(read_layout finalSize)
+final_sha=$(read_layout finalSha256)
+chunk_count=$(read_layout chunkCount)
+
+[ "$target" = "darwin-arm64" ] &&
+  [ "$node_version" = "24.21.0" ] &&
+  [ "$packaging_mode" = "chunked" ] &&
+  [ "$final_filename" = "node" ] &&
+  [ "$final_size" = "122129232" ] &&
+  [ "$final_sha" = "e4b5a3af0e05c75de2eae013904145f40fe7fc2a6e6f17510128bf45cca4e79b" ] &&
+  [ "$chunk_count" = "2" ] || fail
+
+file_size() {
+  /usr/bin/stat -f '%z' "$1" 2>/dev/null || return 1
+}
+
+file_sha() {
+  set -- $(/usr/bin/shasum -a 256 "$1" 2>/dev/null) || return 1
+  printf '%s' "$1"
+}
+
+verify_final() {
+  [ -f "$1" ] || return 1
+  [ "$(file_size "$1")" = "$final_size" ] || return 1
+  [ "$(file_sha "$1")" = "$final_sha" ] || return 1
+  /bin/chmod 700 "$1" 2>/dev/null || return 1
+}
+
+cache_parent="$PLUGIN_DATA/runtime-cache/node-v$node_version/$target/$final_sha"
+final_path="$cache_parent/$final_filename"
+lock_dir="$cache_parent/.reconstruct.lock"
+/bin/mkdir -p "$cache_parent" || fail
+
+if verify_final "$final_path"; then
+  printf '%s\n' "$final_path"
+  exit 0
+fi
+
+acquired=false
+attempt=0
+while [ "$attempt" -lt 300 ]; do
+  if /bin/mkdir "$lock_dir" 2>/dev/null; then
+    acquired=true
+    printf '%s\n' "$$" > "$lock_dir/pid" || fail
+    break
+  fi
+  if verify_final "$final_path"; then
+    printf '%s\n' "$final_path"
+    exit 0
+  fi
+  stale=false
+  lock_pid=$(/bin/cat "$lock_dir/pid" 2>/dev/null || true)
+  case "$lock_pid" in
+    ''|*[!0-9]*)
+      lock_mtime=$(/usr/bin/stat -f '%m' "$lock_dir" 2>/dev/null || printf '0')
+      now=$(/bin/date +%s)
+      [ $((now - lock_mtime)) -ge 30 ] && stale=true
+      ;;
+    *)
+      if ! /bin/kill -0 "$lock_pid" 2>/dev/null; then stale=true; fi
+      ;;
+  esac
+  if [ "$stale" = true ]; then
+    /bin/rm -rf "$lock_dir" 2>/dev/null || true
+  else
+    /bin/sleep 0.1
+  fi
+  attempt=$((attempt + 1))
+done
+[ "$acquired" = true ] || fail
+
+temp_path="$cache_parent/.node.tmp.$$"
+cleanup() {
+  /bin/rm -f "$temp_path" 2>/dev/null || true
+  /bin/rm -rf "$lock_dir" 2>/dev/null || true
+}
+trap cleanup EXIT HUP INT TERM
+
+if verify_final "$final_path"; then
+  printf '%s\n' "$final_path"
+  exit 0
+fi
+
+for stale_temp in "$cache_parent"/.node.tmp.*; do
+  [ -f "$stale_temp" ] && /bin/rm -f "$stale_temp"
+done
+
+umask 077
+: > "$temp_path" || fail
+index=0
+while [ "$index" -lt "$chunk_count" ]; do
+  chunk_path=$(read_layout "chunks.$index.path")
+  chunk_size=$(read_layout "chunks.$index.bytes")
+  chunk_sha=$(read_layout "chunks.$index.sha256")
+  case "$chunk_path" in
+    node-parts/node.part-[0-9][0-9][0-9]) ;;
+    *) fail ;;
+  esac
+  source_path="$PLUGIN_ROOT/runtime/$target/$chunk_path"
+  [ -f "$source_path" ] &&
+    [ "$(file_size "$source_path")" = "$chunk_size" ] &&
+    [ "$(file_sha "$source_path")" = "$chunk_sha" ] || fail
+  /bin/cat "$source_path" >> "$temp_path" || fail
+  index=$((index + 1))
+done
+
+[ "$(file_size "$temp_path")" = "$final_size" ] &&
+  [ "$(file_sha "$temp_path")" = "$final_sha" ] || fail
+/bin/chmod 700 "$temp_path" || fail
+/bin/rm -f "$final_path" || fail
+/bin/mv "$temp_path" "$final_path" || fail
+verify_final "$final_path" || fail
+printf '%s\n' "$final_path"

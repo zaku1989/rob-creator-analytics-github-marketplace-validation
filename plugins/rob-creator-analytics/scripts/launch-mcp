@@ -12,13 +12,14 @@ if [ "$platform" != "Darwin" ] || [ "$architecture" != "arm64" ]; then
   exit 1
 fi
 
-node_path="$PLUGIN_ROOT/runtime/darwin-arm64/bin/node"
+bootstrap="$PLUGIN_ROOT/scripts/runtime-bootstrap"
 server_path="$PLUGIN_ROOT/runtime/shared-analytics-mcp.mjs"
 
 if [ ! -d "$PLUGIN_DATA" ] || [ ! -w "$PLUGIN_DATA" ] ||
-   [ ! -x "$node_path" ] || [ ! -f "$server_path" ]; then
+   [ ! -x "$bootstrap" ] || [ ! -f "$server_path" ]; then
   echo "Packaged Rob Creator Analytics runtime is unavailable" >&2
   exit 1
 fi
 
+node_path=$("$bootstrap")
 exec "$node_path" "$server_path"
