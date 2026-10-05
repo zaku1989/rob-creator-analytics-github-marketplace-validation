@@ -1,8 +1,10 @@
 #!/bin/sh
 set -eu
 
-: "${PLUGIN_ROOT:?PLUGIN_ROOT is required}"
-: "${PLUGIN_DATA:?PLUGIN_DATA is required}"
+if [ -z "${PLUGIN_ROOT:-}" ] || [ -z "${PLUGIN_DATA:-}" ]; then
+  echo "Plugin startup failed: the host must supply PLUGIN_ROOT and PLUGIN_DATA" >&2
+  exit 1
+fi
 
 platform=$(uname -s)
 architecture=$(uname -m)
@@ -17,7 +19,7 @@ server_path="$PLUGIN_ROOT/runtime/shared-analytics-mcp.mjs"
 
 if [ ! -d "$PLUGIN_DATA" ] || [ ! -w "$PLUGIN_DATA" ] ||
    [ ! -x "$bootstrap" ] || [ ! -f "$server_path" ]; then
-  echo "Packaged Rob Creator Analytics runtime is unavailable" >&2
+  echo "Plugin runtime is unavailable: verify host runtime roots and reinstall the package if assets are missing" >&2
   exit 1
 fi
 

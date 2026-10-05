@@ -1,8 +1,10 @@
 #!/bin/sh
 set -eu
 
-: "${PLUGIN_ROOT:?PLUGIN_ROOT is required}"
-: "${PLUGIN_DATA:?PLUGIN_DATA is required}"
+if [ -z "${PLUGIN_ROOT:-}" ] || [ -z "${PLUGIN_DATA:-}" ]; then
+  echo "Plugin startup failed: the host must supply PLUGIN_ROOT and PLUGIN_DATA" >&2
+  exit 1
+fi
 
 platform=$(uname -s)
 architecture=$(uname -m)
@@ -17,7 +19,7 @@ entrypoint="$PLUGIN_ROOT/runtime/management-helper.mjs"
 
 if [ ! -d "$PLUGIN_DATA" ] || [ ! -w "$PLUGIN_DATA" ] ||
    [ ! -x "$bootstrap" ] || [ ! -f "$entrypoint" ]; then
-  echo "Packaged management runtime is unavailable" >&2
+  echo "Plugin management runtime is unavailable: verify host runtime roots and reinstall the package if assets are missing" >&2
   exit 1
 fi
 

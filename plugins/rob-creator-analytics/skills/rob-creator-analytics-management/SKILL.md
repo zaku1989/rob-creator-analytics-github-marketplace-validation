@@ -9,7 +9,7 @@ Use the local management helper for deterministic configuration actions. Do not 
 
 ## Helper invocation
 
-On macOS, invoke `${PLUGIN_ROOT}/scripts/manage`. On Windows x64, invoke `${PLUGIN_ROOT}\scripts\manage.ps1` with PowerShell. Pass only one supported command below and parse its single JSON result. Do not use a user-installed Node runtime; bundled runtime assembly is managed by the plugin.
+Set the invocation cwd explicitly to `${PLUGIN_ROOT}`. On macOS, use command `/bin/sh` with `${PLUGIN_ROOT}/scripts/manage` as the first argument. On Windows x64, use command `powershell.exe` with `-NoLogo -NoProfile -NonInteractive -File` followed by `${PLUGIN_ROOT}\scripts\manage.ps1`. Pass paths and each helper argument separately; do not concatenate a shell command or invoke a relative script as the executable. Pass only one supported command below and parse its single JSON result. Do not use a user-installed Node runtime; bundled runtime assembly is managed by the plugin.
 
 | Intent | Helper arguments |
 | --- | --- |

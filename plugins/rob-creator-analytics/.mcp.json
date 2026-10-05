@@ -1,8 +1,11 @@
 {
   "mcpServers": {
     "rob_creator_analytics": {
-      "command": "./scripts/launch-mcp",
-      "args": [],
+      "command": "/bin/sh",
+      "args": [
+        "./scripts/launch-mcp"
+      ],
+      "cwd": ".",
       "enabled": true,
       "startup_timeout_sec": 10,
       "tool_timeout_sec": 30,
