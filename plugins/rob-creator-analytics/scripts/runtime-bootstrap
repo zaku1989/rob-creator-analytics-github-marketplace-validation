@@ -1,18 +1,14 @@
 #!/bin/sh
 set -eu
 
-: "${PLUGIN_ROOT:?PLUGIN_ROOT is required}"
-: "${PLUGIN_DATA:?PLUGIN_DATA is required}"
-
 fail() {
   echo "Verified packaged runtime is unavailable" >&2
   exit 1
 }
 
-case "$PLUGIN_ROOT:$PLUGIN_DATA" in
-  /*:/*) ;;
-  *) fail ;;
-esac
+script_dir=$(CDPATH= cd -P -- "$(/usr/bin/dirname -- "$0")" && pwd) || fail
+. "$script_dir/local-paths"
+resolve_local_paths "$0" || fail
 
 layout_path="$PLUGIN_ROOT/runtime/darwin-arm64/layout.json"
 [ -f "$layout_path" ] && [ -d "$PLUGIN_DATA" ] && [ -w "$PLUGIN_DATA" ] || fail
@@ -53,7 +49,7 @@ verify_final() {
   /bin/chmod 700 "$1" 2>/dev/null || return 1
 }
 
-cache_parent="$PLUGIN_DATA/runtime-cache/node-v$node_version/$target/$final_sha"
+cache_parent="$RCA_RUNTIME_CACHE_ROOT/node-v$node_version/$target/$final_sha"
 final_path="$cache_parent/$final_filename"
 lock_dir="$cache_parent/.reconstruct.lock"
 /bin/mkdir -p "$cache_parent" || fail

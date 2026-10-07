@@ -1,0 +1,25 @@
+# Shared pre-Node resolver. Caller supplies its script path, never host roots.
+resolve_local_paths() {
+  script_path=$1
+  while [ -L "$script_path" ]; do
+    script_parent=$(CDPATH= cd -P -- "$(/usr/bin/dirname -- "$script_path")" && pwd) || return 1
+    link_target=$(/usr/bin/readlink "$script_path") || return 1
+    case "$link_target" in /*) script_path=$link_target ;; *) script_path="$script_parent/$link_target" ;; esac
+  done
+  script_parent=$(CDPATH= cd -P -- "$(/usr/bin/dirname -- "$script_path")" && pwd) || return 1
+  PLUGIN_ROOT=$(CDPATH= cd -P -- "$script_parent/.." && pwd) || return 1
+  case "${HOME:-}" in /*) ;; *) return 1 ;; esac
+  contract="$PLUGIN_ROOT/scripts/local-paths.json"
+  version=$(/usr/bin/plutil -extract schemaVersion raw -o - "$contract" 2>/dev/null) || return 1
+  suffix=$(/usr/bin/plutil -extract macDataSuffix raw -o - "$contract" 2>/dev/null) || return 1
+  state_dir=$(/usr/bin/plutil -extract stateDirectory raw -o - "$contract" 2>/dev/null) || return 1
+  cache_dir=$(/usr/bin/plutil -extract runtimeCacheDirectory raw -o - "$contract" 2>/dev/null) || return 1
+  [ "$version" = "1" ] && [ "$suffix" = "Library/Application Support/Rob Creator Analytics/Codex" ] &&
+    [ "$state_dir" = "state" ] && [ "$cache_dir" = "runtime-cache" ] || return 1
+  PLUGIN_DATA="$HOME/$suffix"
+  RCA_STATE_ROOT="$PLUGIN_DATA/$state_dir"
+  RCA_RUNTIME_CACHE_ROOT="$PLUGIN_DATA/$cache_dir"
+  export PLUGIN_ROOT PLUGIN_DATA RCA_STATE_ROOT RCA_RUNTIME_CACHE_ROOT
+  /bin/mkdir -p "$RCA_STATE_ROOT" "$RCA_RUNTIME_CACHE_ROOT" 2>/dev/null || return 1
+  [ -w "$RCA_STATE_ROOT" ] && [ -w "$RCA_RUNTIME_CACHE_ROOT" ]
+}
