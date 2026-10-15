@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "plugin": {
     "name": "rob-creator-analytics",
-    "version": "0.1.0-rc.4"
+    "version": "0.1.0"
   },
-  "sourceCommit": "88a014f76bddb5b0463cb536bbaa60a1008b0092",
+  "sourceCommit": "1f8bdd5b6e80ec9d0bccc5e4df1a2e9fd1b6cf70",
   "sourceTreeDirty": false,
   "target": "darwin-arm64",
   "node": {
@@ -31,15 +31,15 @@
   },
   "capabilitySnapshotId": "analytics-capabilities-2026-08-26-r1",
   "bundles": {
-    "mcpSha256": "9a9bf3ed8fb43cdb6e67df7022407e2f45fab94c5c7111e6550953023f59ff69",
-    "managementSha256": "c72acfc74f66717e9201e6c51e595f8162ca150a60eb008e0f36d99a3c35e9b8",
+    "mcpSha256": "802109758f8094172cc0acee506e4ab6045a8e7e6ae249677f9c3894167ecec5",
+    "managementSha256": "84c91deaee9011289778314661b78608d5b03b9cf99bf395be18dc64f197d0e3",
     "capabilitySha256": "1d24e90e6f98373c8b42ec733cfef91a168090ca3d79e0093f711d07270d66eb"
   },
   "files": [
     {
       "path": ".codex-plugin/plugin.json",
-      "bytes": 888,
-      "sha256": "a936d77797f0da9833ac78e99ec7af968c352e3602d4211cbf4790fb24ac7c0b"
+      "bytes": 883,
+      "sha256": "f6a75480240e7ef2f567ad60c950aeba70ee42258a1a8dc5767e54c760cccfcc"
     },
     {
       "path": ".mcp.json",
@@ -88,18 +88,18 @@
     },
     {
       "path": "runtime/management-helper.mjs",
-      "bytes": 84707,
-      "sha256": "c72acfc74f66717e9201e6c51e595f8162ca150a60eb008e0f36d99a3c35e9b8"
+      "bytes": 84755,
+      "sha256": "84c91deaee9011289778314661b78608d5b03b9cf99bf395be18dc64f197d0e3"
     },
     {
       "path": "runtime/manifest.json",
-      "bytes": 760,
-      "sha256": "37eeded74f078ec76a71d0e2c4908c5dad3f05d63fce93dc77ddbca0c047deb1"
+      "bytes": 755,
+      "sha256": "965b9a2788647eee8e57dd30417606d31f0004f2f652cb090a98817d76da9c9d"
     },
     {
       "path": "runtime/shared-analytics-mcp.mjs",
-      "bytes": 421142,
-      "sha256": "9a9bf3ed8fb43cdb6e67df7022407e2f45fab94c5c7111e6550953023f59ff69"
+      "bytes": 421185,
+      "sha256": "802109758f8094172cc0acee506e4ab6045a8e7e6ae249677f9c3894167ecec5"
     },
     {
       "path": "scripts/launch-mcp",
@@ -128,9 +128,9 @@
     },
     {
       "path": "skills/rob-creator-analytics-management/SKILL.md",
-      "bytes": 5812,
-      "sha256": "50b9b681b3b06735974596afaacdd4e2e7f1541c6065e2cc9c34deb23e61bf85"
+      "bytes": 5836,
+      "sha256": "6d48a26a330101552ac52c6a1867642d0a92bcd2f329254451e4bf4515343f8a"
     }
   ],
-  "contentManifestSha256": "a924302814ac694ad185606e7f2b9d095232622bf79fb8428789c46fb86971ec"
+  "contentManifestSha256": "0d13d1bc7cf0e699b056e3d2228e6fff4588665b2db03add72591ffdfd715933"
 }
